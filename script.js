@@ -1,10 +1,11 @@
 function getComputerChoice() {
-  var options = ["Rock", "Paper", "Scissors"];
+  var options = ["rock", "paper", "scissors"];
   var randomIndex = Math.floor(Math.random() * 3);
   var randomString = options[randomIndex];
-
   return randomString;
 }
+
+// Function to play one round of the game
 function oneRound(playerSelection, computerSelection) {
   playerSelection = playerSelection.toUpperCase();
   computerSelection = computerSelection.toUpperCase();
@@ -30,37 +31,73 @@ function oneRound(playerSelection, computerSelection) {
     }
   }
 }
+
 function game() {
   var playerScore = 0;
   var computerScore = 0;
+  var winner = null;
+  var resultDisplay = document.querySelector("#result");
+  const buttons = document.querySelectorAll(".buttons button");
+  const restartButton = document.querySelector(".restart");
+  let h1Elem = document.querySelector("#h1-element");
+  restartButton.style.display="none";
+  buttons.forEach((button)=>{
+    button.addEventListener("click", ()=> {
+      const playerSelection = button.id;
+      var computerSelection = getComputerChoice();
+      var result = oneRound(playerSelection, computerSelection);
 
-  for (var i = 0; i < 5; i++) {
-    var playerSelection = prompt("Choose Rock, Paper, or Scissors:").toUpperCase();
-    var computerSelection = getComputerChoice();
-    var result = oneRound(playerSelection, computerSelection);
+      console.log("Player chose: " + playerSelection);
+      console.log("Computer chose: " + computerSelection);
+      //console.log(result);
 
-    console.log("Player chose: " + playerSelection);
-    console.log("Computer chose: " + computerSelection);
-    console.log(result);
+      if (result === "Player won!") {
+        playerScore++;
+      } else if (result === "Computer won!") {
+        computerScore++;
+      }
 
-    if (result === "Player won!") {
-      playerScore++;
-    } else if (result === "Computer won!") {
-      computerScore++;
-    }
-  }
+      resultDisplay.innerHTML = `<span class="res">${result}<span><p class="scores">
+      Player: <span class="score">${playerScore}</span><br>
+       Computer: <span class="score">${computerScore}</span></p>
+      <small>[ ${playerSelection} vs ${computerSelection} ]</small>`;
 
-  console.log("Final score:");
-  console.log("Player: " + playerScore);
-  console.log("Computer: " + computerScore);
+      if (playerScore === 5) {
+        winner = "Player";
+      } else if (computerScore === 5) {
+        winner = "Computer";
+      }
 
-  if (playerScore > computerScore) {
-    console.log("Player wins the game!");
-  } else if (playerScore < computerScore) {
-    console.log("Computer wins the game!");
-  } else {
-    console.log("The game ends in a tie.");
-  }
+      if (winner) {
+        startConfetti();
+        h1Elem.style.display="none";
+        restartButton.disabled=false;
+        if(winner=="Computer"){
+          resultDisplay.innerHTML = `<h2 class="winner">Computer won! More luck next time..`;
+
+        }else{
+          resultDisplay.innerHTML = `<h2 class="winner">Congrats! You won.`;
+        }
+        buttons.forEach((button) => {
+          button.style.display="none";
+        });
+        restartButton.style.display = "block";
+      }
+    });
+  });
+  restartButton.addEventListener("click", ()=> {
+    stopConfetti();
+    playerScore = 0;
+    computerScore = 0;
+    winner = null;
+    resultDisplay.textContent = "";
+    h1Elem.style.display="block";
+    buttons.forEach((button) => {
+      button.disabled = false;
+      button.style.display = "block";
+    });
+    restartButton.style.display = "none";
+  });
 }
 
 game();

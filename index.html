@@ -1,13 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="script.js"></script>
+    <script src="script.js" defer></script>
+    <script src="confetti.js"></script>
+    <link rel="stylesheet" href="style.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game</title>
 </head>
 <body>
-    
+    <h1 id="h1-element">Choose your fighter</h1>
+    <div class="buttons">
+        <button id="rock"><img src="rock.png" width="200px" height="200px" alt="" >
+        </button>
+        <button id="paper"><img src="paper.png" width="200px" height="200px" alt=""></button>
+        <button id="scissors"><img src="sci.png" width="200px" height="100px" alt=""></button>
+    </div>
+    <div class="ending-justify">
+    <div id="result"></div> 
+    <div class="restart">GAME OVER</div>
+    </div>
 </body>
 </html>
